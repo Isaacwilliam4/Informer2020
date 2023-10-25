@@ -1,7 +1,0 @@
-This is where we'll make note of project specific changes we made to the project.
-
-
-TO DO:
-	We need to modify the code to accept the time series graph data that we generated - graph.txt.
-
-graph.txt - a 1000 x 90 matrix, where each row is a timestep and each column is an edge of that timestep.

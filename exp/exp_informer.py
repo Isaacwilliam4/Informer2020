@@ -149,11 +149,13 @@ class Exp_Informer(Exp_Basic):
             self.model.train()
             epoch_time = time.time()
             for i, (batch_x,batch_y,batch_x_mark,batch_y_mark) in enumerate(train_loader):
+
                 iter_count += 1
                 
                 model_optim.zero_grad()
                 pred, true = self._process_one_batch(
                     train_data, batch_x, batch_y, batch_x_mark, batch_y_mark)
+
                 loss = criterion(pred, true)
                 train_loss.append(loss.item())
                 
