@@ -90,7 +90,8 @@ class Exp_Informer(Exp_Basic):
             inverse=args.inverse,
             timeenc=timeenc,
             freq=freq,
-            cols=args.cols
+            cols=args.cols,
+            scale=False
         )
         print(flag, len(data_set))
         data_loader = DataLoader(
@@ -155,11 +156,6 @@ class Exp_Informer(Exp_Basic):
                 model_optim.zero_grad()
                 pred, true = self._process_one_batch(
                     train_data, batch_x, batch_y, batch_x_mark, batch_y_mark)
-
-                print('pred',pred)
-                print('true',true)
-
-                asdf
 
                 loss = criterion(pred, true)
                 train_loss.append(loss.item())
@@ -264,9 +260,9 @@ class Exp_Informer(Exp_Basic):
         return
 
     def _process_one_batch(self, dataset_object, batch_x, batch_y, batch_x_mark, batch_y_mark):
+
         batch_x = batch_x.float().to(self.device)
         batch_y = batch_y.float()
-
         batch_x_mark = batch_x_mark.float().to(self.device)
         batch_y_mark = batch_y_mark.float().to(self.device)
 

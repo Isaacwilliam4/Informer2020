@@ -226,6 +226,7 @@ class Dataset_Custom(Dataset):
 
         print('features', self.features)
 
+
         if self.cols:
             cols=self.cols.copy()
             cols.remove(self.target)
