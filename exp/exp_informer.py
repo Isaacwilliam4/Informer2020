@@ -156,6 +156,11 @@ class Exp_Informer(Exp_Basic):
                 pred, true = self._process_one_batch(
                     train_data, batch_x, batch_y, batch_x_mark, batch_y_mark)
 
+                print('pred',pred)
+                print('true',true)
+
+                asdf
+
                 loss = criterion(pred, true)
                 train_loss.append(loss.item())
                 
