@@ -12,5 +12,5 @@
 #SBATCH --mail-type=FAIL
 
 # LOAD MODULES, INSERT CODE, AND RUN YOUR PROGRAMS HERE
-python -u ./main_informer.py --model informer --d_layers 10 --e_layers 10 --target 'none' --data 'custom' --data_path 'sim_graph.csv' --root_path './data/' --features M --freq d --enc_in 90 --dec_in 90 --c_out 90 --num_workers 8 --train_epochs 20  --patience 5 --des 'simulated_graph_informer_test' --use_multi_gpu
+python -u ./main_informer.py --model informer --target 'none' --data 'custom' --data_path 'sim_graph.csv' --root_path "./data/" --features M --freq d --enc_in 90 --dec_in 90 --c_out 90 --num_workers 8 --des 'simulated_graph_informer_test' --use_multi_gpu
 
