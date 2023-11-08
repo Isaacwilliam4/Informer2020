@@ -222,8 +222,6 @@ class Dataset_Custom(Dataset):
         '''
         df_raw.columns: ['date', ...(other features), target feature]
         '''
-        # cols = list(df_raw.columns); 
-
         print('features', self.features)
 
 
@@ -260,6 +258,7 @@ class Dataset_Custom(Dataset):
             train_data = df_data[border1s[0]:border2s[0]]
             self.scaler.fit(train_data.values)
             data = self.scaler.transform(df_data.values)
+            data = np.nan_to_num(data, nan=0)
         else:
             data = df_data.values
             
