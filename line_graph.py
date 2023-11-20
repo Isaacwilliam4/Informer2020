@@ -175,6 +175,7 @@ parser.add_argument('--alpha', type=float, help='Alpha value', required=True)
 parser.add_argument('--random_seed', type=int, help='Random seed', required=True)
 
 
+
 args = parser.parse_args()
 
 num_nodes = args.num_nodes
@@ -188,7 +189,9 @@ LG_list = np.array([np.array(get_partitions(G_list[i])) for i in range(len(G_lis
 
 master = combine_G_LG(vals, LG_list, timesteps)
 
-np.savetxt(f'./data/{num_nodes}x{num_nodes}_t{timesteps}.csv',master, delimiter=',')
+np.savetxt(f'./data/{num_nodes}x{num_nodes}_t{timesteps}_train.csv',master, delimiter=',')
+np.savetxt(f'./data/{num_nodes}x{num_nodes}_t{timesteps}_labels.csv',vals, delimiter=',')
+
 
 
 
