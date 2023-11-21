@@ -35,7 +35,7 @@ if [ "$line_graph" == "true" ]; then
     c_out=$(( $1 * $1 - $1 ))
 
     # Load modules, insert code, and run your programs here
-    python -u ./main_informer.py --model informer --target 'none' --data 'sim_graph' --m_true_len $c_out --data_path lg_n$1_t$2.csv --root_path "./data/" --features M --freq d --enc_in $enc_in --dec_in $enc_in --c_out $c_out --num_workers 0 --des 'simulated_graph_informer_test'
+    python -u ./main_informer.py --model informer --target 'none' --data 'sim_graph' --m_true_len $c_out --data_path lg_n$1_t$2.csv --root_path "./data/" --features M --freq d --enc_in $enc_in --dec_in $enc_in --c_out $c_out --num_workers 0 --des lg_n$1_t$2_test
 
 elif [ "$line_graph" == "false" ]; then
     echo 'Running training with original data'
@@ -51,7 +51,7 @@ elif [ "$line_graph" == "false" ]; then
     c_out=$(( $1 * $1 - $1 ))
 
     # Load modules, insert code, and run your programs here
-    python -u ./main_informer.py --model informer --target 'none' --data 'sim_graph' --m_true_len $c_out --data_path g_n$1_t$2.csv --root_path "./data/" --features M --freq d --enc_in $enc_in --dec_in $enc_in --c_out $c_out --num_workers 0 --des 'simulated_graph_informer_test'
+    python -u ./main_informer.py --model informer --target 'none' --data 'sim_graph' --m_true_len $c_out --data_path g_n$1_t$2.csv --root_path "./data/" --features M --freq d --enc_in $enc_in --dec_in $enc_in --c_out $c_out --num_workers 0 --des g_n$1_t$2_test
 
 else
 
