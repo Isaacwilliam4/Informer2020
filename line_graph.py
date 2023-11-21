@@ -77,12 +77,12 @@ def get_ETV_edges(primal_G, node):
   ### Each node in the primal becomes an edge in the ETVs according to the direction the edges face eachother ###
   for (start_1, end_1, attr_1) in primal_G.in_edges(node, data=True):
     for (start_2, end_2, attr_2) in primal_G.in_edges(node, data=True):
-      ETV_edges |= make_ETV_edge(node, attr_1['index'], attr_2['index'], 'in-in')
+      ETV_edges.update(make_ETV_edge(node, attr_1['index'], attr_2['index'], 'in-in'))
     for (start_2, end_2, attr_2) in primal_G.out_edges(node, data=True):
-      ETV_edges |= make_ETV_edge(node, attr_1['index'], attr_2['index'], 'in-out')
+      ETV_edges.update(make_ETV_edge(node, attr_1['index'], attr_2['index'], 'in-out'))
   for (start_1, end_1, attr_1) in primal_G.out_edges(node, data=True):
     for (start_2, end_2, attr_2) in primal_G.out_edges(node, data=True):
-      ETV_edges |= make_ETV_edge(node, attr_1['index'], attr_2['index'], 'out-out')
+      ETV_edges.update(make_ETV_edge(node, attr_1['index'], attr_2['index'], 'out-out'))
 
   return ETV_edges
 

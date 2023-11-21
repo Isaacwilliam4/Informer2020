@@ -19,6 +19,9 @@ parser.add_argument('--checkpoints', type=str, default='./checkpoints/', help='l
 parser.add_argument('--seq_len', type=int, default=96, help='input sequence length of Informer encoder')
 parser.add_argument('--label_len', type=int, default=48, help='start token length of Informer decoder')
 parser.add_argument('--pred_len', type=int, default=24, help='prediction sequence length')
+parser.add_argument('--m_true_len', type=int, default=24, help='in multivariate predict multivariate, this is the length of the true values if they don\'t match the input')
+
+
 # Informer decoder input: concat[start token series(label_len), zero padding series(pred_len)]
 
 parser.add_argument('--enc_in', type=int, default=7, help='encoder input size')

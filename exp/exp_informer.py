@@ -1,4 +1,4 @@
-from data.data_loader import Dataset_ETT_hour, Dataset_ETT_minute, Dataset_Custom, Dataset_Pred
+from data.data_loader import Dataset_ETT_hour, Dataset_ETT_minute, Dataset_Custom, Dataset_Pred, Dataset_Simgraph
 from exp.exp_basic import Exp_Basic
 from models.model import Informer, InformerStack
 
@@ -69,6 +69,7 @@ class Exp_Informer(Exp_Basic):
             'ECL':Dataset_Custom,
             'Solar':Dataset_Custom,
             'custom':Dataset_Custom,
+            'sim_graph':Dataset_Simgraph
         }
         Data = data_dict[self.args.data]
         timeenc = 0 if args.embed!='timeF' else 1
@@ -287,6 +288,9 @@ class Exp_Informer(Exp_Basic):
         if self.args.inverse:
             outputs = dataset_object.inverse_transform(outputs)
         f_dim = -1 if self.args.features=='MS' else 0
-        batch_y = batch_y[:,-self.args.pred_len:,f_dim:].to(self.device)
-
+        if self.args.m_true_len:
+            batch_y = batch_y[:,-self.args.pred_len:,:self.args.m_true_len].to(self.device)
+        else:
+            batch_y = batch_y[:,-self.args.pred_len:,f_dim:].to(self.device)
+            
         return outputs, batch_y

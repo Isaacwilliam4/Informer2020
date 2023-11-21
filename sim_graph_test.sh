@@ -31,8 +31,5 @@ fi
 enc_in=$(( $1 * $1 - $1 + 3 * $1 * $1 ))
 c_out=$(( $1 * $1 - $1 ))
 
-echo $enc_in
-echo $c_out
-
 # Load modules, insert code, and run your programs here
-python -u ./main_informer.py --model informer --target 'none' --data 'custom' --data_path n$1_t$2.csv --root_path "./data/" --features M --freq d --enc_in $enc_in --dec_in $enc_in --c_out $c_out --num_workers 0 --des 'simulated_graph_informer_test'
+python -u ./main_informer.py --model informer --target 'none' --data 'sim_graph' --m_true_len $c_out --data_path n$1_t$2.csv --root_path "./data/" --features M --freq d --enc_in $enc_in --dec_in $enc_in --c_out $c_out --num_workers 0 --des 'simulated_graph_informer_test'
