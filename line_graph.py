@@ -183,14 +183,31 @@ timesteps = args.timesteps
 alpha = args.alpha
 random_seed = args.random_seed
 
+#get values of the generated primal graph shape = (num timesteps, num edges)
 vals = generate_graph_vals(num_nodes, timesteps, alpha, random_seed)
+
+#get the networkx graph list from the vals to easily get the line graphs
 G_list = setup_graphs(vals)
+
+#get the line graph partition for each timestep
 LG_list = np.array([np.array(get_partitions(G_list[i])) for i in range(len(G_list))])
 
+#concatenate the line graph onto the original data
 master = combine_G_LG(vals, LG_list, timesteps)
 
-np.savetxt(f'./data/{num_nodes}x{num_nodes}_t{timesteps}_train.csv',master, delimiter=',')
-np.savetxt(f'./data/{num_nodes}x{num_nodes}_t{timesteps}_labels.csv',vals, delimiter=',')
+primal_df = pd.DataFrame(vals)
+line_graph_df = pd.DataFrame(master)
+
+#the informer requires a 'date' column for the timesteps
+primal_df.index.name = 'date'
+primal_df = primal_df.reset_index()
+line_graph_df.index.name = 'date'
+line_graph_df = line_graph_df.reset_index()
+
+
+ 
+#using the line graph representation as training and the original data as the label
+line_graph_df.to_csv(f'./data/n{num_nodes}_t{timesteps}.csv', index=False)
 
 
 
