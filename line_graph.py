@@ -169,6 +169,7 @@ import sys
 parser = argparse.ArgumentParser(description="Script for generating data with line graph concatenations")
 
 # Parse arguments
+parser.add_argument('--line_graph', action='store_true', help='Build line graph', default=False)
 parser.add_argument('--num_nodes', type=int, help='Number of nodes', required=True)
 parser.add_argument('--timesteps', type=int, help='Number of timesteps', required=True)
 parser.add_argument('--alpha', type=float, help='Alpha value', required=True)
@@ -178,6 +179,7 @@ parser.add_argument('--random_seed', type=int, help='Random seed', required=True
 
 args = parser.parse_args()
 
+create_lg = args.line_graph
 num_nodes = args.num_nodes
 timesteps = args.timesteps
 alpha = args.alpha
@@ -186,29 +188,26 @@ random_seed = args.random_seed
 #get values of the generated primal graph shape = (num timesteps, num edges)
 vals = generate_graph_vals(num_nodes, timesteps, alpha, random_seed)
 
-#get the networkx graph list from the vals to easily get the line graphs
-G_list = setup_graphs(vals)
+if create_lg:
+  #get the networkx graph list from the vals to easily get the line graphs
+  G_list = setup_graphs(vals)
 
-#get the line graph partition for each timestep
-LG_list = np.array([np.array(get_partitions(G_list[i])) for i in range(len(G_list))])
+  #get the line graph partition for each timestep
+  LG_list = np.array([np.array(get_partitions(G_list[i])) for i in range(len(G_list))])
 
-#concatenate the line graph onto the original data
-master = combine_G_LG(vals, LG_list, timesteps)
+  #concatenate the line graph onto the original data
+  master = combine_G_LG(vals, LG_list, timesteps)
 
-primal_df = pd.DataFrame(vals)
-line_graph_df = pd.DataFrame(master)
+  line_graph_df = pd.DataFrame(master)
+  line_graph_df.index.name = 'date'
+  line_graph_df = line_graph_df.reset_index()
+  line_graph_df.to_csv(f'./data/lg_n{num_nodes}_t{timesteps}.csv', index=False)
 
-#the informer requires a 'date' column for the timesteps
-primal_df.index.name = 'date'
-primal_df = primal_df.reset_index()
-line_graph_df.index.name = 'date'
-line_graph_df = line_graph_df.reset_index()
-
-
- 
-#using the line graph representation as training and the original data as the label
-line_graph_df.to_csv(f'./data/n{num_nodes}_t{timesteps}.csv', index=False)
-
+else:
+  primal_df = pd.DataFrame(vals)
+  primal_df.index.name = 'date'
+  primal_df = primal_df.reset_index()
+  primal_df.to_csv(f'./data/g_n{num_nodes}_t{timesteps}.csv', index=False)
 
 
 
