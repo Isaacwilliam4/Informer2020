@@ -31,8 +31,8 @@ if [ "$line_graph" == "true" ]; then
         python ./line_graph.py --line_graph --num_nodes $1 --timesteps $2 --alpha .4 --random_seed 42
     fi
     # Calculate enc_in and c_out
-    enc_in=$(( $1 * $1 - $1 + 3 * $1 * $1 ))
-    c_out=$(( $1 * $1 - $1 ))
+    enc_in=$(( $1 * $1 + 3 * $1 * $1 ))
+    c_out=$(( $1 * $1 ))
 
     # Load modules, insert code, and run your programs here
     python -u ./main_informer.py --model informer --target 'none' --data 'sim_graph' --m_true_len $c_out --data_path lg_n$1_t$2.csv --root_path "./data/" --features M --freq d --enc_in $enc_in --dec_in $enc_in --c_out $c_out --num_workers 0 --des lg_n$1_t$2_test --use_multi_gpu
@@ -47,8 +47,8 @@ elif [ "$line_graph" == "false" ]; then
         python ./line_graph.py --num_nodes $1 --timesteps $2 --alpha .4 --random_seed 42
     fi
     # Calculate enc_in and c_out
-    enc_in=$(( $1 * $1 - $1 ))
-    c_out=$(( $1 * $1 - $1 ))
+    enc_in=$(( $1 * $1 ))
+    c_out=$(( $1 * $1 ))
 
     # Load modules, insert code, and run your programs here
     python -u ./main_informer.py --model informer --target 'none' --data 'sim_graph' --m_true_len $c_out --data_path g_n$1_t$2.csv --root_path "./data/" --features M --freq d --enc_in $enc_in --dec_in $enc_in --c_out $c_out --num_workers 0 --des g_n$1_t$2_test --use_multi_gpu

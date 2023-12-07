@@ -55,7 +55,7 @@ def add_partitions(v_list):
             for j in range(n):
                 in_in[i][j] = (np.sum(m[:,j]) - m[i][j])
                 out_out[i][j] = (np.sum(m[i]) - m[i][j])
-                in_out[i][j] = (np.sum(m) - in_in[i][j] - out_out[i][j] - m[i][j])
+                in_out[i][j] = (np.sum(m[j]) + np.sum(m[:,i]) - m[i][j])
 
         in_in_list.append(in_in.reshape(n**2))
         out_out_list.append(out_out.reshape(n**2))
@@ -75,8 +75,6 @@ parser.add_argument('--timesteps', type=int, help='Number of timesteps', require
 parser.add_argument('--alpha', type=float, help='Alpha value', required=True)
 parser.add_argument('--random_seed', type=int, help='Random seed', required=True)
 
-
-
 args = parser.parse_args()
 
 create_lg = args.line_graph
@@ -86,11 +84,9 @@ alpha = args.alpha
 random_seed = args.random_seed
 
 #get values of the generated primal graph shape = (num timesteps, num edges)
-print("Generating primal graphs")
+print("Generating graph data")
 start = time.time()
 vals = generate_graph_vals(num_nodes, timesteps, alpha, random_seed)
-end = time.time()
-print("Graphs generated, time:", end-start)
 
 if create_lg:
   #concatenate the line graph onto the original data
@@ -99,14 +95,14 @@ if create_lg:
   line_graph_df.index.name = 'date'
   line_graph_df = line_graph_df.reset_index()
   line_graph_df.to_csv(f'./data/lg_n{num_nodes}_t{timesteps}.csv', index=False)
-
 else:
   primal_df = pd.DataFrame(vals)
   primal_df.index.name = 'date'
   primal_df = primal_df.reset_index()
   primal_df.to_csv(f'./data/g_n{num_nodes}_t{timesteps}.csv', index=False)
 
-
+end = time.time()
+print("Graphs generated, time:", end-start)
 
 
 
