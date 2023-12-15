@@ -3,4 +3,4 @@ scripts/
 /checkpoints/
 /results/
 *.csv
-/data/
+#/data/
