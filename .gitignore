@@ -2,5 +2,5 @@ scripts/
 /__pycache__/
 /checkpoints/
 /results/
-*.csv
-#/data/
+#*.csv
+/data/
