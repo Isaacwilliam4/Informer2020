@@ -1,10 +1,10 @@
-#!/bin/bash
+#!/bin/bash --login
 
 #SBATCH --time=05:00:00   # walltime
-#SBATCH --ntasks=8   # number of processor cores (i.e. tasks)
+#SBATCH --ntasks=1   # number of processor cores (i.e. tasks)
 #SBATCH --nodes=1   # number of nodes
 #SBATCH --gpus=4
-#SBATCH --mem-per-cpu=10000M   # memory per CPU core
+#SBATCH --mem=80G   # memory per CPU core
 #SBATCH -J "sim_graph"   # job name
 #SBATCH --mail-user=isaacwilliam4@gmail.com   # email address
 #SBATCH --mail-type=BEGIN
@@ -13,6 +13,7 @@
 
 # Execute Python script with command-line arguments
 
+mamba activate informer
 
 if [ "$#" -lt 3 ]; then
     echo "Not enough args, required: number of nodes, timesteps, true or false for line graph generation"
