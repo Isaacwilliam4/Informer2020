@@ -74,6 +74,7 @@ class Exp_Informer(Exp_Basic):
         Data = data_dict[self.args.data]
         timeenc = 0 if args.embed!='timeF' else 1
 
+
         if flag == 'test':
             shuffle_flag = False; drop_last = True; batch_size = args.batch_size; freq=args.freq
         elif flag=='pred':
@@ -92,7 +93,7 @@ class Exp_Informer(Exp_Basic):
             timeenc=timeenc,
             freq=freq,
             cols=args.cols,
-            scale=True
+            scale=False
         )
         print(flag, len(data_set))
         data_loader = DataLoader(
@@ -118,17 +119,32 @@ class Exp_Informer(Exp_Basic):
         for i, (batch_x,batch_y,batch_x_mark,batch_y_mark) in enumerate(vali_loader):
             pred, true = self._process_one_batch(
                 vali_data, batch_x, batch_y, batch_x_mark, batch_y_mark)
+
             loss = criterion(pred.detach().cpu(), true.detach().cpu())
+
+            # pred = pred.squeeze()
+            # true = true.squeeze().detach().cpu().numpy()
+
+
+            # np.savetxt('tpred.csv', pred.detach().cpu().numpy(), delimiter=",")
+            # np.savetxt('ttrue.csv', true, delimiter=",") 
+
+            # print('loss', loss)
+            # print('pred', pred.size())
+            # print('true', true.size())
+
+            # asdf
             total_loss.append(loss)
         total_loss = np.average(total_loss)
+
         self.model.train()
         return total_loss
 
     def train(self, setting):
+
         train_data, train_loader = self._get_data(flag = 'train')
         vali_data, vali_loader = self._get_data(flag = 'val')
         test_data, test_loader = self._get_data(flag = 'test')
-
         path = os.path.join(self.args.checkpoints, setting)
         if not os.path.exists(path):
             os.makedirs(path)
@@ -197,6 +213,7 @@ class Exp_Informer(Exp_Basic):
         return self.model
 
     def test(self, setting):
+        istest = True
         test_data, test_loader = self._get_data(flag='test')
         
         self.model.eval()
@@ -266,13 +283,13 @@ class Exp_Informer(Exp_Basic):
         batch_y = batch_y.float()
         batch_x_mark = batch_x_mark.float().to(self.device)
         batch_y_mark = batch_y_mark.float().to(self.device)
-
         # decoder input
         if self.args.padding==0:
             dec_inp = torch.zeros([batch_y.shape[0], self.args.pred_len, batch_y.shape[-1]]).float()
         elif self.args.padding==1:
             dec_inp = torch.ones([batch_y.shape[0], self.args.pred_len, batch_y.shape[-1]]).float()
         dec_inp = torch.cat([batch_y[:,:self.args.label_len,:], dec_inp], dim=1).float().to(self.device)
+
         # encoder - decoder
         if self.args.use_amp:
             with torch.cuda.amp.autocast():
@@ -280,6 +297,7 @@ class Exp_Informer(Exp_Basic):
                     outputs = self.model(batch_x, batch_x_mark, dec_inp, batch_y_mark)[0]
                 else:
                     outputs = self.model(batch_x, batch_x_mark, dec_inp, batch_y_mark)
+                
         else:
             if self.args.output_attention:
                 outputs = self.model(batch_x, batch_x_mark, dec_inp, batch_y_mark)[0]
@@ -293,4 +311,10 @@ class Exp_Informer(Exp_Basic):
         else:
             batch_y = batch_y[:,-self.args.pred_len:,f_dim:].to(self.device)
             
+        # Replace NaN values with 0
+        outputs[torch.isnan(outputs)] = 0
+
+        # Replace Inf values with 0
+        outputs[torch.isinf(outputs)] = 0
+
         return outputs, batch_y

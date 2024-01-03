@@ -1,0 +1,85 @@
+WARNING: you may need to modify /home/isaacwp/.config/docker/daemon.json to
+pull images; see
+https://github.com/docker/for-linux/issues/1172#issuecomment-771929216 
+Preparing custom data... 
+Args: Type=custom, Datapath=./data/tomato.csv, LineGraphPartitioning=true, NumNodes=238
+Running custom data with line graph partitioning
+Prepared file exists for custom data
+Args in experiment:
+Namespace(activation='gelu', attn='prob', batch_size=1, c_out=56644, checkpoints='./checkpoints/', cols=None, d_ff=2048, d_layers=1, d_model=512, data='custom', data_path='tomato_lg_prepared.csv', dec_in=226576, des='tomato', detail_freq='d', device_ids=[0, 1, 2, 3], devices='0,1,2,3', distil=True, do_predict=False, dropout=0.05, e_layers=2, embed='timeF', enc_in=226576, factor=5, features='M', freq='d', gpu=0, inverse=False, itr=2, label_len=2, learning_rate=0.0001, loss='mse', lradj='type1', m_true_len=56644, mix=True, model='informer', n_heads=8, num_workers=0, output_attention=False, padding=0, patience=3, pred_len=1, root_path='./data/', s_layers=[3, 2, 1], seq_len=6, target='none', train_epochs=6, use_amp=False, use_gpu=True, use_multi_gpu=True)
+Use GPU: cuda:0
+>>>>>>>start training : informer_custom_ftM_sl6_ll2_pl1_dm512_nh8_el2_dl1_df2048_atprob_fc5_ebtimeF_dtTrue_mxTrue_tomato_0>>>>>>>>>>>>>>>>>>>>>>>>>>
+features M
+train 12
+features M
+val 3
+features M
+test 5
+Epoch: 1 cost time: 4.798089981079102
+Epoch: 1, Steps: 12 | Train Loss: 0.7573173 Vali Loss: 0.7507418 Test Loss: 0.7696028
+Validation loss decreased (inf --> 0.750742).  Saving model ...
+Updating learning rate to 0.0001
+Epoch: 2 cost time: 4.600836992263794
+Epoch: 2, Steps: 12 | Train Loss: 0.5176140 Vali Loss: 0.5990705 Test Loss: 0.6215110
+Validation loss decreased (0.750742 --> 0.599070).  Saving model ...
+Updating learning rate to 5e-05
+Epoch: 3 cost time: 4.600080728530884
+Epoch: 3, Steps: 12 | Train Loss: 0.4307755 Vali Loss: 0.5517750 Test Loss: 0.5755625
+Validation loss decreased (0.599070 --> 0.551775).  Saving model ...
+Updating learning rate to 2.5e-05
+Epoch: 4 cost time: 4.602149963378906
+Epoch: 4, Steps: 12 | Train Loss: 0.3993881 Vali Loss: 0.5314593 Test Loss: 0.5558783
+Validation loss decreased (0.551775 --> 0.531459).  Saving model ...
+Updating learning rate to 1.25e-05
+Epoch: 5 cost time: 4.602466821670532
+Epoch: 5, Steps: 12 | Train Loss: 0.3855257 Vali Loss: 0.5245070 Test Loss: 0.5493829
+Validation loss decreased (0.531459 --> 0.524507).  Saving model ...
+Updating learning rate to 6.25e-06
+Epoch: 6 cost time: 4.60012674331665
+Epoch: 6, Steps: 12 | Train Loss: 0.3774327 Vali Loss: 0.5199396 Test Loss: 0.5458423
+Validation loss decreased (0.524507 --> 0.519940).  Saving model ...
+Updating learning rate to 3.125e-06
+>>>>>>>testing : informer_custom_ftM_sl6_ll2_pl1_dm512_nh8_el2_dl1_df2048_atprob_fc5_ebtimeF_dtTrue_mxTrue_tomato_0<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<
+features M
+test 5
+test shape: (5, 1, 1, 56644) (5, 1, 1, 56644)
+test shape: (5, 1, 56644) (5, 1, 56644)
+mse:0.5458422899246216, mae:0.23089338839054108
+Use GPU: cuda:0
+>>>>>>>start training : informer_custom_ftM_sl6_ll2_pl1_dm512_nh8_el2_dl1_df2048_atprob_fc5_ebtimeF_dtTrue_mxTrue_tomato_1>>>>>>>>>>>>>>>>>>>>>>>>>>
+features M
+train 12
+features M
+val 3
+features M
+test 5
+Epoch: 1 cost time: 4.604343414306641
+Epoch: 1, Steps: 12 | Train Loss: 0.7624245 Vali Loss: 0.7413049 Test Loss: 0.7627234
+Validation loss decreased (inf --> 0.741305).  Saving model ...
+Updating learning rate to 0.0001
+Epoch: 2 cost time: 4.602139234542847
+Epoch: 2, Steps: 12 | Train Loss: 0.5204922 Vali Loss: 0.5942217 Test Loss: 0.6183238
+Validation loss decreased (0.741305 --> 0.594222).  Saving model ...
+Updating learning rate to 5e-05
+Epoch: 3 cost time: 4.598665475845337
+Epoch: 3, Steps: 12 | Train Loss: 0.4329253 Vali Loss: 0.5511330 Test Loss: 0.5766548
+Validation loss decreased (0.594222 --> 0.551133).  Saving model ...
+Updating learning rate to 2.5e-05
+Epoch: 4 cost time: 4.6000893115997314
+Epoch: 4, Steps: 12 | Train Loss: 0.4028246 Vali Loss: 0.5276784 Test Loss: 0.5551982
+Validation loss decreased (0.551133 --> 0.527678).  Saving model ...
+Updating learning rate to 1.25e-05
+Epoch: 5 cost time: 4.609505653381348
+Epoch: 5, Steps: 12 | Train Loss: 0.3875780 Vali Loss: 0.5168433 Test Loss: 0.5469170
+Validation loss decreased (0.527678 --> 0.516843).  Saving model ...
+Updating learning rate to 6.25e-06
+Epoch: 6 cost time: 4.599699258804321
+Epoch: 6, Steps: 12 | Train Loss: 0.3819445 Vali Loss: 0.5127388 Test Loss: 0.5443536
+Validation loss decreased (0.516843 --> 0.512739).  Saving model ...
+Updating learning rate to 3.125e-06
+>>>>>>>testing : informer_custom_ftM_sl6_ll2_pl1_dm512_nh8_el2_dl1_df2048_atprob_fc5_ebtimeF_dtTrue_mxTrue_tomato_1<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<
+features M
+test 5
+test shape: (5, 1, 1, 56644) (5, 1, 1, 56644)
+test shape: (5, 1, 56644) (5, 1, 56644)
+mse:0.5443536043167114, mae:0.21905097365379333

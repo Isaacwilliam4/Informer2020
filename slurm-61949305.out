@@ -1,0 +1,84 @@
+WARNING: you may need to modify /home/isaacwp/.config/docker/daemon.json to
+pull images; see
+https://github.com/docker/for-linux/issues/1172#issuecomment-771929216 
+Preparing custom data... 
+Running custom data without line graph partitioning
+Generating prepared file for custom data
+Args in experiment:
+Namespace(activation='gelu', attn='prob', batch_size=2, c_out=56644, checkpoints='./checkpoints/', cols=None, d_ff=2048, d_layers=1, d_model=512, data='custom', data_path='updated_csv_prepared.csv', dec_in=56644, des='updated_csv', detail_freq='d', device_ids=[0, 1, 2, 3], devices='0,1,2,3', distil=True, do_predict=False, dropout=0.05, e_layers=2, embed='timeF', enc_in=56644, factor=5, features='M', freq='d', gpu=0, inverse=False, itr=2, label_len=2, learning_rate=0.0001, loss='mse', lradj='type1', m_true_len=56644, mix=True, model='informer', n_heads=8, num_workers=0, output_attention=False, padding=0, patience=3, pred_len=1, root_path='./data/', s_layers=[3, 2, 1], seq_len=4, target='none', train_epochs=6, use_amp=False, use_gpu=True, use_multi_gpu=True)
+Use GPU: cuda:0
+>>>>>>>start training : informer_custom_ftM_sl4_ll2_pl1_dm512_nh8_el2_dl1_df2048_atprob_fc5_ebtimeF_dtTrue_mxTrue_updated_csv_0>>>>>>>>>>>>>>>>>>>>>>>>>>
+features M
+train 14
+features M
+val 3
+features M
+test 5
+Epoch: 1 cost time: 4.28290581703186
+Epoch: 1, Steps: 7 | Train Loss: 0.3979298 Vali Loss: nan Test Loss: nan
+Validation loss decreased (inf --> nan).  Saving model ...
+Updating learning rate to 0.0001
+Epoch: 2 cost time: 1.890840768814087
+Epoch: 2, Steps: 7 | Train Loss: 0.2831977 Vali Loss: nan Test Loss: nan
+Validation loss decreased (nan --> nan).  Saving model ...
+Updating learning rate to 5e-05
+Epoch: 3 cost time: 1.8932161331176758
+Epoch: 3, Steps: 7 | Train Loss: 0.1911175 Vali Loss: nan Test Loss: nan
+Validation loss decreased (nan --> nan).  Saving model ...
+Updating learning rate to 2.5e-05
+Epoch: 4 cost time: 1.882535696029663
+Epoch: 4, Steps: 7 | Train Loss: 0.1614291 Vali Loss: nan Test Loss: nan
+Validation loss decreased (nan --> nan).  Saving model ...
+Updating learning rate to 1.25e-05
+Epoch: 5 cost time: 1.883284330368042
+Epoch: 5, Steps: 7 | Train Loss: 0.1505959 Vali Loss: nan Test Loss: nan
+Validation loss decreased (nan --> nan).  Saving model ...
+Updating learning rate to 6.25e-06
+Epoch: 6 cost time: 1.8938813209533691
+Epoch: 6, Steps: 7 | Train Loss: 0.1457961 Vali Loss: nan Test Loss: nan
+Validation loss decreased (nan --> nan).  Saving model ...
+Updating learning rate to 3.125e-06
+>>>>>>>testing : informer_custom_ftM_sl4_ll2_pl1_dm512_nh8_el2_dl1_df2048_atprob_fc5_ebtimeF_dtTrue_mxTrue_updated_csv_0<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<
+features M
+test 5
+test shape: (2, 2, 1, 56644) (2, 2, 1, 56644)
+test shape: (4, 1, 56644) (4, 1, 56644)
+mse:nan, mae:nan
+Use GPU: cuda:0
+>>>>>>>start training : informer_custom_ftM_sl4_ll2_pl1_dm512_nh8_el2_dl1_df2048_atprob_fc5_ebtimeF_dtTrue_mxTrue_updated_csv_1>>>>>>>>>>>>>>>>>>>>>>>>>>
+features M
+train 14
+features M
+val 3
+features M
+test 5
+Epoch: 1 cost time: 1.9076192378997803
+Epoch: 1, Steps: 7 | Train Loss: 0.3908726 Vali Loss: nan Test Loss: nan
+Validation loss decreased (inf --> nan).  Saving model ...
+Updating learning rate to 0.0001
+Epoch: 2 cost time: 1.8822426795959473
+Epoch: 2, Steps: 7 | Train Loss: 0.2846649 Vali Loss: nan Test Loss: nan
+Validation loss decreased (nan --> nan).  Saving model ...
+Updating learning rate to 5e-05
+Epoch: 3 cost time: 1.903458833694458
+Epoch: 3, Steps: 7 | Train Loss: 0.1901192 Vali Loss: nan Test Loss: nan
+Validation loss decreased (nan --> nan).  Saving model ...
+Updating learning rate to 2.5e-05
+Epoch: 4 cost time: 1.887922763824463
+Epoch: 4, Steps: 7 | Train Loss: 0.1603671 Vali Loss: nan Test Loss: nan
+Validation loss decreased (nan --> nan).  Saving model ...
+Updating learning rate to 1.25e-05
+Epoch: 5 cost time: 1.8906886577606201
+Epoch: 5, Steps: 7 | Train Loss: 0.1493237 Vali Loss: nan Test Loss: nan
+Validation loss decreased (nan --> nan).  Saving model ...
+Updating learning rate to 6.25e-06
+Epoch: 6 cost time: 1.8856010437011719
+Epoch: 6, Steps: 7 | Train Loss: 0.1448152 Vali Loss: nan Test Loss: nan
+Validation loss decreased (nan --> nan).  Saving model ...
+Updating learning rate to 3.125e-06
+>>>>>>>testing : informer_custom_ftM_sl4_ll2_pl1_dm512_nh8_el2_dl1_df2048_atprob_fc5_ebtimeF_dtTrue_mxTrue_updated_csv_1<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<
+features M
+test 5
+test shape: (2, 2, 1, 56644) (2, 2, 1, 56644)
+test shape: (4, 1, 56644) (4, 1, 56644)
+mse:nan, mae:nan

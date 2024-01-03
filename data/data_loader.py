@@ -1,6 +1,7 @@
 import os
 import numpy as np
 import pandas as pd
+from numpy import inf
 
 import torch
 from torch.utils.data import Dataset, DataLoader
@@ -239,7 +240,7 @@ class Dataset_Simgraph(Dataset):
         else:
             df_raw = df_raw[['date']+cols+[self.target]]
 
-        num_nodes = int(1/8 + np.sqrt(((len(df_raw.columns.values)-1))/4 + 1/64)) 
+        # num_nodes = int(1/8 + np.sqrt(((len(df_raw.columns.values)-1))/4 + 1/64)) 
 
         # self.seq_len = (4*num_nodes**2) - num_nodes
         # self.label_len = (num_nodes**2) - num_nodes
@@ -258,7 +259,7 @@ class Dataset_Simgraph(Dataset):
             df_data = df_raw[cols_data]
         elif self.features=='S':
             df_data = df_raw[[self.target]]
-
+        
         if self.scale:
             train_data = df_data[border1s[0]:border2s[0]]
             self.scaler.fit(train_data.values)
@@ -342,6 +343,7 @@ class Dataset_Custom(Dataset):
         df_raw.columns: ['date', ...(other features), target feature]
         '''
         print('features', self.features)
+        
 
 
         if self.cols:
@@ -378,9 +380,10 @@ class Dataset_Custom(Dataset):
             self.scaler.fit(train_data.values)
             data = self.scaler.transform(df_data.values)
             data = np.nan_to_num(data, nan=0)
+
         else:
             data = df_data.values
-            
+
         df_stamp = df_raw[['date']][border1:border2]
         df_stamp['date'] = pd.to_datetime(df_stamp.date)
         data_stamp = time_features(df_stamp, timeenc=self.timeenc, freq=self.freq)
@@ -391,6 +394,7 @@ class Dataset_Custom(Dataset):
         else:
             self.data_y = data[border1:border2]
         self.data_stamp = data_stamp
+
     
     def __getitem__(self, index):
         s_begin = index

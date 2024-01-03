@@ -6,6 +6,7 @@ import random
 import time
 import argparse
 import sys
+import os
 
 def apply_sine_function(column, a, b):
   return a + b*np.sin(column)
@@ -53,9 +54,14 @@ def add_partitions(v_list):
 
         for i in range(n):
             for j in range(n):
-                in_in[i][j] = (np.sum(m[:,j]) - m[i][j])
-                out_out[i][j] = (np.sum(m[i]) - m[i][j])
-                in_out[i][j] = (np.sum(m[j]) + np.sum(m[:,i]) - m[i][j])
+                in_in[i][j] = (np.sum(m[:,j]))
+                out_out[i][j] = (np.sum(m[i]))
+                in_out[i][j] = (np.sum(m[j]) + np.sum(m[:,i]))
+        # for i in range(n):
+        #     for j in range(n):
+        #         in_in[i][j] = (np.sum(m[:,j]) - m[i][j])
+        #         out_out[i][j] = (np.sum(m[i]) - m[i][j])
+        #         in_out[i][j] = (np.sum(m[j]) + np.sum(m[:,i]) - m[i][j])
 
         in_in_list.append(in_in.reshape(n**2))
         out_out_list.append(out_out.reshape(n**2))
@@ -69,40 +75,80 @@ def add_partitions(v_list):
 parser = argparse.ArgumentParser(description="Script for generating data with line graph concatenations")
 
 # Parse arguments
-parser.add_argument('--line_graph', action='store_true', help='Build line graph', default=False)
-parser.add_argument('--num_nodes', type=int, help='Number of nodes', required=True)
-parser.add_argument('--timesteps', type=int, help='Number of timesteps', required=True)
-parser.add_argument('--alpha', type=float, help='Alpha value', required=True)
-parser.add_argument('--random_seed', type=int, help='Random seed', required=True)
+parser.add_argument('--type', type=str, help='Either graph or custom', default='simulation')
+parser.add_argument('--line_graph', action='store_true', help='Concatenate line graph partitions onto data', default=False)
+parser.add_argument('--num_nodes', type=int, help='Number of nodes', required=False)
+parser.add_argument('--timesteps', type=int, help='Number of timesteps', required=False)
+parser.add_argument('--alpha', type=float, help='Alpha value (percent of edges to assign values to)', required=False)
+parser.add_argument('--random_seed', type=int, help='Random seed', required=False)
+parser.add_argument('--data_path', type=str, help='Path to custom data', required=False)
+parser.add_argument('--name', type=str, help='name of custom data', required=False)
 
 args = parser.parse_args()
 
+exp_type = args.type
 create_lg = args.line_graph
 num_nodes = args.num_nodes
 timesteps = args.timesteps
 alpha = args.alpha
 random_seed = args.random_seed
+data_path = args.data_path
+name = args.name
 
-#get values of the generated primal graph shape = (num timesteps, num edges)
-print("Generating graph data")
-start = time.time()
-vals = generate_graph_vals(num_nodes, timesteps, alpha, random_seed)
+if exp_type == "custom":
 
-if create_lg:
-  #concatenate the line graph onto the original data
-  lg_data = add_partitions(vals)
-  line_graph_df = pd.DataFrame(lg_data)
-  line_graph_df.index.name = 'date'
-  line_graph_df = line_graph_df.reset_index()
-  line_graph_df.to_csv(f'./data/lg_n{num_nodes}_t{timesteps}.csv', index=False)
+  if (data_path or name) == None:
+    print("When performing experiment on custom data must specify --data_path, and --name, --line_graph optional if you want to create line graph partitions, data must be csv in with shape (timesteps x num_edges)")
+    exit(0)
+
+  if (os.path.exists(f'./data/{name}.csv')):
+    print("Prepared file exists for custom data")
+    exit(0)
+    
+  else:
+    print("Generating prepared file for custom data")
+
+    df = pd.read_csv(data_path)
+    print(df.max().max())
+    print(df.min().min())
+    
+    if create_lg:
+      lg_data = add_partitions(df.values)
+      df = pd.DataFrame(lg_data)
+
+    df += 1
+    df = np.log(df)
+    df.index.name = 'date'
+    num_edges = df.shape[1] 
+    df = df.reset_index()
+    df.to_csv(f'./data/{name}.csv', index=False, float_format='%.10f')
+
 else:
-  primal_df = pd.DataFrame(vals)
-  primal_df.index.name = 'date'
-  primal_df = primal_df.reset_index()
-  primal_df.to_csv(f'./data/g_n{num_nodes}_t{timesteps}.csv', index=False)
 
-end = time.time()
-print("Graphs generated, time:", end-start)
+  if (create_lg or num_nodes or timesteps or alpha or random_seed) == None:
+    print("When performing graph experiment must specify --line_graph, --num_nodes, --timesteps, --alpha, --random_seed")
+    exit(0)
+
+  #get values of the generated primal graph shape = (num timesteps, num edges)
+  print("Generating graph data")
+  start = time.time()
+  vals = generate_graph_vals(num_nodes, timesteps, alpha, random_seed)
+
+  if create_lg:
+    #concatenate the line graph onto the original data
+    lg_data = add_partitions(vals)
+    line_graph_df = pd.DataFrame(lg_data)
+    line_graph_df.index.name = 'date'
+    line_graph_df = line_graph_df.reset_index()
+    line_graph_df.to_csv(f'./data/lg_n{num_nodes}_t{timesteps}.csv', index=False)
+  else:
+    primal_df = pd.DataFrame(vals)
+    primal_df.index.name = 'date'
+    primal_df = primal_df.reset_index()
+    primal_df.to_csv(f'./data/g_n{num_nodes}_t{timesteps}.csv', index=False)
+
+  end = time.time()
+  print("Graphs generated, time:", end-start)
 
 
 
