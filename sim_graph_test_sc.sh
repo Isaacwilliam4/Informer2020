@@ -4,12 +4,13 @@
 #SBATCH --ntasks=1   # number of processor cores (i.e. tasks)
 #SBATCH --nodes=1   # number of nodes
 #SBATCH --gpus=4
-#SBATCH --mem=80G   # memory per CPU core
+#SBATCH --mem=128G   # memory per CPU core
 #SBATCH -J "sim_graph"   # job name
 #SBATCH --mail-user=isaacwilliam4@gmail.com   # email address
 #SBATCH --mail-type=BEGIN
 #SBATCH --mail-type=END
 #SBATCH --mail-type=FAIL
+#SBATCH -C pascal
 
 # Execute Python script with command-line arguments
 
@@ -57,7 +58,7 @@ if [ "$1" == "simulation" ]; then
         c_out=$(( $2 * $2 ))
 
         # Load modules, insert code, and run your programs here
-        python -u ./main_informer.py --pred_len 1 --batch_size 1 --seq_len 6 --label_len 2 --model informer --target 'none' --data 'sim_graph' --m_true_len $c_out --data_path g_n$2_t$3.csv --root_path "./data/" --features M --freq d --enc_in $enc_in --dec_in $enc_in --c_out $c_out --num_workers 0 --des g_n$2_t$3_test --use_multi_gpu
+        python -u ./main_informer.py --model informer --target 'none' --data 'sim_graph' --m_true_len $c_out --data_path g_n$2_t$3.csv --root_path "./data/" --features M --freq d --enc_in $enc_in --dec_in $enc_in --c_out $c_out --num_workers 0 --des g_n$2_t$3_test --use_multi_gpu
 
     else
 
@@ -93,7 +94,7 @@ elif [ "$1" == "custom" ]; then
 
         if [ -f ./data/$name$ext.csv ]; then
 
-            python -u ./main_informer.py --pred_len 1 --batch_size 1 --seq_len 6 --label_len 2 --model informer --target 'none' --data 'custom' --m_true_len $num_edges --data_path $name$ext.csv --root_path "./data/" --features M --freq d --enc_in $tot_in --dec_in $tot_in --c_out $num_edges --num_workers 0 --des $name --use_multi_gpu
+            python -u ./main_informer.py --pred_len 6 --batch_size 1 --seq_len 6 --label_len 2 --model informer --target 'none' --data 'custom' --m_true_len $num_edges --data_path $name$ext.csv --root_path "./data/" --features M --freq d --enc_in $tot_in --dec_in $tot_in --c_out $num_edges --num_workers 0 --des $name --use_multi_gpu
         
         else 
 
@@ -114,7 +115,7 @@ elif [ "$1" == "custom" ]; then
 
         if [ -f ./data/$name$ext.csv ]; then
 
-            python -u ./main_informer.py --pred_len 1 --batch_size 1 --seq_len 6 --label_len 2 --model informer --target 'none' --data 'custom' --m_true_len $num_edges --data_path $name$ext.csv --root_path "./data/" --features M --freq d --enc_in $num_edges --dec_in $num_edges --c_out $num_edges --num_workers 0 --des $name --use_multi_gpu
+            python -u ./main_informer.py --pred_len 6 --batch_size 1 --seq_len 6 --label_len 2 --model informer --target 'none' --data 'custom' --m_true_len $num_edges --data_path $name$ext.csv --root_path "./data/" --features M --freq d --enc_in $num_edges --dec_in $num_edges --c_out $num_edges --num_workers 0 --des $name --use_multi_gpu
             
         else 
 

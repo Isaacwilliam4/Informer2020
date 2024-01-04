@@ -32,8 +32,10 @@
 ./data/ETT/ETTm1.csv
 ./data/g_n100_t1000.csv
 ./data/g_n238_t26.csv
+./data/g_n300_t1000.csv
 ./data/lg_n100_t1000.csv
 ./data/lg_n238_t26.csv
+./data/lg_n300_t1000.csv
 ./data/tomato_lg_prepared.csv
 ./data/tomato_prepared.csv
 ./.git/lfs/objects/0a/96/0a96854fc5c6dd6775147eca20668ba571dde1848fcb2df470a666d1623f6362

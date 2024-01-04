@@ -54,14 +54,9 @@ def add_partitions(v_list):
 
         for i in range(n):
             for j in range(n):
-                in_in[i][j] = (np.sum(m[:,j]))
-                out_out[i][j] = (np.sum(m[i]))
+                in_in[i][j] = (np.sum(m[:,j]) - m[i][j])
+                out_out[i][j] = (np.sum(m[i]) - m[i][j])
                 in_out[i][j] = (np.sum(m[j]) + np.sum(m[:,i]))
-        # for i in range(n):
-        #     for j in range(n):
-        #         in_in[i][j] = (np.sum(m[:,j]) - m[i][j])
-        #         out_out[i][j] = (np.sum(m[i]) - m[i][j])
-        #         in_out[i][j] = (np.sum(m[j]) + np.sum(m[:,i]) - m[i][j])
 
         in_in_list.append(in_in.reshape(n**2))
         out_out_list.append(out_out.reshape(n**2))

@@ -1,4 +1,0 @@
-WARNING: you may need to modify /home/isaacwp/.config/docker/daemon.json to
-pull images; see
-https://github.com/docker/for-linux/issues/1172#issuecomment-771929216 
-Not enough args, required: number of nodes, timesteps, true or false for line graph generation
