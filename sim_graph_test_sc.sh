@@ -1,7 +1,7 @@
 #!/bin/bash --login
 
-#SBATCH --time=05:00:00   # walltime
-#SBATCH --ntasks=1   # number of processor cores (i.e. tasks)
+#SBATCH --time=48:00:00   # walltime
+#SBATCH --ntasks=4   # number of processor cores (i.e. tasks)
 #SBATCH --nodes=1   # number of nodes
 #SBATCH --gpus=4
 #SBATCH --mem=128G   # memory per CPU core
@@ -42,7 +42,7 @@ if [ "$1" == "simulation" ]; then
         c_out=$(( $2 * $2 ))
 
         # Load modules, insert code, and run your programs here
-        python -u ./main_informer.py --model informer --target 'none' --data 'sim_graph' --m_true_len $c_out --data_path lg_n$2_t$3.csv --root_path "./data/" --features M --freq d --enc_in $enc_in --dec_in $enc_in --c_out $c_out --num_workers 0 --des lg_n$2_t$3_test --use_multi_gpu
+        python -u ./main_informer.py --model informer --batch_size 8 --target 'none' --data 'sim_graph' --m_true_len $c_out --data_path lg_n$2_t$3.csv --root_path "./data/" --features M --freq d --enc_in $enc_in --dec_in $enc_in --c_out $c_out --num_workers 4 --des lg_n$2_t$3_test --use_multi_gpu
 
     elif [ "$line_graph" == "false" ]; then
         echo 'Running training with original data'

@@ -1,0 +1,36 @@
+WARNING: you may need to modify /home/isaacwp/.config/docker/daemon.json to
+pull images; see
+https://github.com/docker/for-linux/issues/1172#issuecomment-771929216 
+Args: Type=simulation, NumNodes=300 TimeSteps=1000, LineGraphPartitioning=true
+Running training with line graph partitions
+Simulated graph file exists, skipping file generation...
+Args in experiment:
+Namespace(activation='gelu', attn='prob', batch_size=8, c_out=90000, checkpoints='./checkpoints/', cols=None, d_ff=2048, d_layers=1, d_model=512, data='sim_graph', data_path='lg_n300_t1000.csv', dec_in=360000, des='lg_n300_t1000_test', detail_freq='d', device_ids=[0, 1, 2, 3], devices='0,1,2,3', distil=True, do_predict=False, dropout=0.05, e_layers=2, embed='timeF', enc_in=360000, factor=5, features='M', freq='d', gpu=0, inverse=False, itr=2, label_len=48, learning_rate=0.0001, loss='mse', lradj='type1', m_true_len=90000, mix=True, model='informer', n_heads=8, num_workers=4, output_attention=False, padding=0, patience=3, pred_len=24, root_path='./data/', s_layers=[3, 2, 1], seq_len=96, target='none', train_epochs=6, use_amp=False, use_gpu=True, use_multi_gpu=True)
+Use GPU: cuda:0
+>>>>>>>start training : informer_sim_graph_ftM_sl96_ll48_pl24_dm512_nh8_el2_dl1_df2048_atprob_fc5_ebtimeF_dtTrue_mxTrue_lg_n300_t1000_test_0>>>>>>>>>>>>>>>>>>>>>>>>>>
+features M
+train 581
+features M
+val 77
+features M
+test 177
+Traceback (most recent call last):
+  File "./main_informer.py", line 106, in <module>
+    exp.train(setting)
+  File "/home/isaacwp/repos/Informer2020/exp/exp_informer.py", line 193, in train
+    loss.backward()
+  File "/home/isaacwp/.conda/envs/informer/lib/python3.6/site-packages/torch/tensor.py", line 245, in backward
+    torch.autograd.backward(self, gradient, retain_graph, create_graph, inputs=inputs)
+  File "/home/isaacwp/.conda/envs/informer/lib/python3.6/site-packages/torch/autograd/__init__.py", line 147, in backward
+    allow_unreachable=True, accumulate_grad=True)  # allow_unreachable flag
+  File "/home/isaacwp/.conda/envs/informer/lib/python3.6/site-packages/torch/autograd/function.py", line 89, in apply
+    return self._forward_cls.backward(self, *args)  # type: ignore
+  File "/home/isaacwp/.conda/envs/informer/lib/python3.6/site-packages/torch/nn/parallel/_functions.py", line 34, in backward
+    return (None,) + ReduceAddCoalesced.apply(ctx.input_device, ctx.num_inputs, *grad_outputs)
+  File "/home/isaacwp/.conda/envs/informer/lib/python3.6/site-packages/torch/nn/parallel/_functions.py", line 45, in forward
+    return comm.reduce_add_coalesced(grads_, destination)
+  File "/home/isaacwp/.conda/envs/informer/lib/python3.6/site-packages/torch/nn/parallel/comm.py", line 143, in reduce_add_coalesced
+    flat_result = reduce_add(flat_tensors, destination)
+  File "/home/isaacwp/.conda/envs/informer/lib/python3.6/site-packages/torch/nn/parallel/comm.py", line 95, in reduce_add
+    result = torch.empty_like(inputs[root_index])
+RuntimeError: CUDA out of memory. Tried to allocate 2.06 GiB (GPU 0; 15.89 GiB total capacity; 10.88 GiB already allocated; 1.60 GiB free; 13.41 GiB reserved in total by PyTorch)
