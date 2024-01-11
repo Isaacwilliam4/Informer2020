@@ -18,12 +18,20 @@ mamba activate informer
 
 if [ "$1" == "simulation" ]; then
 
-    if [ "$#" -lt 4 ]; then
-        echo "Args required for graph simulation: number of nodes, timesteps, true or false for line graph generation"
+    if [ "$#" -lt 5 ]; then
+        echo -e "Args required for graph simulation: \n
+        number of nodes: the number of nodes in the original graph G \n
+        timesteps: how many timesteps of simulated data you want to create \n
+        line graph embedding: true or false for line graph embedding on the data \n
+        alpha value: value (0,1], that represents the percent of edges that will be assigned values"
+        # sequence len: The length of the sequence of timesteps the model will train on \n
+        # label len: The length of the context that the model is given in order to make prediction \n
+        # pred len: The number of timesteps the model will predict into the future \n
+        # batch size: The batch size for data processing
         exit 1
     fi
 
-    echo "Args: Type=$1, NumNodes=$2 TimeSteps=$3, LineGraphPartitioning=$4"
+    echo "Args: Type=$1, NumNodes=$2 TimeSteps=$3, LineGraphPartitioning=$4, Alpha=$5" #SeqLen=$6, LabelLen=$7, PredLen=$8, BatchSize=$9
 
 
     line_graph=$4
@@ -35,7 +43,7 @@ if [ "$1" == "simulation" ]; then
             echo "Simulated graph file exists, skipping file generation..."
         else
             echo "Simulated graph file doesn't exist, generating file..."
-            python ./line_graph.py --type "simulation" --line_graph --num_nodes $2 --timesteps $3 --alpha .4 --random_seed 42
+            python ./line_graph.py --type "simulation" --line_graph --num_nodes $2 --timesteps $3 --alpha $5 --random_seed 42
         fi
         # Calculate enc_in and c_out
         enc_in=$(( 4 * $2 * $2 ))
@@ -51,7 +59,7 @@ if [ "$1" == "simulation" ]; then
             echo "Simulated graph file exists, skipping file generation..."
         else
             echo "Simulated graph file doesn't exist, generating file..."
-            python ./line_graph.py --type "simulation" --num_nodes $2 --timesteps $3 --alpha .4 --random_seed 42
+            python ./line_graph.py --type "simulation" --num_nodes $2 --timesteps $3 --alpha $5 --random_seed 42
         fi
         # Calculate enc_in and c_out
         enc_in=$(( $2 * $2 ))
@@ -94,7 +102,7 @@ elif [ "$1" == "custom" ]; then
 
         if [ -f ./data/$name$ext.csv ]; then
 
-            python -u ./main_informer.py --pred_len 6 --batch_size 1 --seq_len 6 --label_len 2 --model informer --target 'none' --data 'custom' --m_true_len $num_edges --data_path $name$ext.csv --root_path "./data/" --features M --freq d --enc_in $tot_in --dec_in $tot_in --c_out $num_edges --num_workers 0 --des $name --use_multi_gpu
+            python -u ./main_informer.py --pred_len 6 --batch_size 1 --seq_len 6 --label_len 3 --model informer --target 'none' --data 'custom' --m_true_len $num_edges --data_path $name$ext.csv --root_path "./data/" --features M --freq d --enc_in $tot_in --dec_in $tot_in --c_out $num_edges --num_workers 0 --des $name --use_multi_gpu
         
         else 
 
@@ -115,7 +123,7 @@ elif [ "$1" == "custom" ]; then
 
         if [ -f ./data/$name$ext.csv ]; then
 
-            python -u ./main_informer.py --pred_len 6 --batch_size 1 --seq_len 6 --label_len 2 --model informer --target 'none' --data 'custom' --m_true_len $num_edges --data_path $name$ext.csv --root_path "./data/" --features M --freq d --enc_in $num_edges --dec_in $num_edges --c_out $num_edges --num_workers 0 --des $name --use_multi_gpu
+            python -u ./main_informer.py --pred_len 6 --batch_size 1 --seq_len 6 --label_len 3 --model informer --target 'none' --data 'custom' --m_true_len $num_edges --data_path $name$ext.csv --root_path "./data/" --features M --freq d --enc_in $num_edges --dec_in $num_edges --c_out $num_edges --num_workers 0 --des $name --use_multi_gpu
             
         else 
 

@@ -23,14 +23,15 @@ def generate_graph_vals(n=10, t=1000, alpha=0.4, seed=123):
 
   ### EXCLUDE VALUES: prevents values assigned to self loops
   exclude = np.array([(i*n + i) for i in range(n)])
-  sin_edges = np.random.choice(np.setdiff1d(np.arange(num_edges), exclude), size=int(num_edges*alpha), replace=False)
+  edge_ids_no_diag = np.setdiff1d(np.arange(num_edges), exclude)
+  sin_edges = np.random.choice(edge_ids_no_diag, size=int(len(edge_ids_no_diag)*alpha), replace=False)
 
   ### SET VALUES FOR EACH TIME STEP - requires: n, t, sin_edges ###
   vals = np.zeros(shape=(t, num_edges))
   vals[:,sin_edges] = np.tile(np.arange(t), (len(sin_edges), 1)).T
 
-  a = np.random.uniform(-10,10,len(sin_edges))
-  b = np.random.uniform(-10,10,len(sin_edges))
+  a = np.random.uniform(0,10,len(sin_edges))
+  b = np.random.uniform(0,10,len(sin_edges))
 
   vals[:,sin_edges] = apply_sine_function(vals[:,sin_edges], a, b)
 
@@ -104,8 +105,7 @@ if exp_type == "custom":
     print("Generating prepared file for custom data")
 
     df = pd.read_csv(data_path)
-    print(df.max().max())
-    print(df.min().min())
+       
     
     if create_lg:
       lg_data = add_partitions(df.values)
@@ -144,7 +144,5 @@ else:
 
   end = time.time()
   print("Graphs generated, time:", end-start)
-
-
 
 
