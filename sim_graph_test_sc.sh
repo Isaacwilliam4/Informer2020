@@ -18,12 +18,14 @@ mamba activate informer
 
 if [ "$1" == "simulation" ]; then
 
-    if [ "$#" -lt 5 ]; then
+    if [ "$#" -lt 6 ]; then
         echo -e "Args required for graph simulation: \n
         number of nodes: the number of nodes in the original graph G \n
         timesteps: how many timesteps of simulated data you want to create \n
         line graph embedding: true or false for line graph embedding on the data \n
-        alpha value: value (0,1], that represents the percent of edges that will be assigned values"
+        alpha value: value (0,1], that represents the percent of edges that will be assigned values \n
+	    permute: Whether or not to permute the data for line graph"
+
         # sequence len: The length of the sequence of timesteps the model will train on \n
         # label len: The length of the context that the model is given in order to make prediction \n
         # pred len: The number of timesteps the model will predict into the future \n
@@ -31,28 +33,35 @@ if [ "$1" == "simulation" ]; then
         exit 1
     fi
 
-    echo "Args: Type=$1, NumNodes=$2 TimeSteps=$3, LineGraphPartitioning=$4, Alpha=$5" #SeqLen=$6, LabelLen=$7, PredLen=$8, BatchSize=$9
+    echo "Args: Type=$1, NumNodes=$2 TimeSteps=$3, LineGraphPartitioning=$4, Alpha=$5, Permute=$6" #SeqLen=$6, LabelLen=$7, PredLen=$8, BatchSize=$9
 
 
     line_graph=$4
+    permute=$6
 
     if [ "$line_graph" == "true" ]; then
         echo 'Running training with line graph partitions'
-
-        if [ -f ./data/lg_n$2_t$3.csv ]; then
-            echo "Simulated graph file exists, skipping file generation..."
+	
+        if [ "$permute" == "true" ]; then
+            if [ -f ./data/lg_p_n$2_t$3.csv ]; then
+                echo "Simulated, permuted, line graph file exists, skipping file generation..."
+            else
+                echo "Simulated, permuted, line graph file doesn't exist, generating file..."
+                python ./line_graph.py --type "simulation" --line_graph --num_nodes $2 --timesteps $3 --alpha $5 --permute  --random_seed 42
+            fi
         else
-            echo "Simulated graph file doesn't exist, generating file..."
-            python ./line_graph.py --type "simulation" --line_graph --num_nodes $2 --timesteps $3 --alpha $5 --random_seed 42
-        fi
-        # Calculate enc_in and c_out
-        enc_in=$(( 4 * $2 * $2 ))
-        c_out=$(( $2 * $2 ))
-
-        # Load modules, insert code, and run your programs here
-        python -u ./main_informer.py --model informer --batch_size 8 --target 'none' --data 'sim_graph' --m_true_len $c_out --data_path lg_n$2_t$3.csv --root_path "./data/" --features M --freq d --enc_in $enc_in --dec_in $enc_in --c_out $c_out --num_workers 4 --des lg_n$2_t$3_test --use_multi_gpu
+            if [ -f ./data/lg_n$2_t$3.csv ]; then
+                echo "Simulated line graph file exists, skipping file generation..."
+            else
+                echo "Simulated line graph file doesn't exist, generating file..."
+                python ./line_graph.py --type "simulation" --line_graph --num_nodes $2 --timesteps $3 --alpha $5 --random_seed 42
+            fi
 
     elif [ "$line_graph" == "false" ]; then
+        if [ "$permute" == "true" ]; then
+            echo "Cannot permute unless using line graph data, exiting..."
+            exit 1
+        fi
         echo 'Running training with original data'
 
         if [ -f ./data/g_n$2_t$3.csv ]; then
@@ -79,18 +88,25 @@ elif [ "$1" == "custom" ]; then
     echo "Preparing custom data... "
 
     if [ "$#" -lt 4 ]; then
-        echo "Args required for custom: data path of file, true or false for line graph partitioning, then number of nodes in graph, prepared file will have name file name + _prepared"
-        exit 1
+        echo -e "Args required for custom data: \n
+        data path: the path to the custom data should be of shape numnodes x timesteps \n
+        line graph partitioning: true or false for including the line graph partition of the data \n
+        number of nodes: number of nodes in the graph \n
+        permute: Whether or not to permute the data for line graph"
+
     fi
 
     line_graph=$3
     num_edges=$(( $4 * $4 ))
     filename="${2##*/}"
     name="${filename%.*}"
-    echo "Args: Type=$1, Datapath=$2, LineGraphPartitioning=$3, NumNodes=$4"
+    permute=$5
+    echo "Args: Type=$1, Datapath=$2, LineGraphPartitioning=$3, NumNodes=$4, Permute=$5"
 
     if [ "$line_graph" == "true" ]; then
 
+
+        
         ext="_lg_prepared"
 
 

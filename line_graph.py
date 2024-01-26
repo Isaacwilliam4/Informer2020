@@ -38,7 +38,7 @@ def generate_graph_vals(n=10, t=1000, alpha=0.4, seed=123):
   return vals
 
 ### given the list of vals (num_edges x timesteps), return new data with line graph partitions concatenated
-def add_partitions(v_list):
+def add_partitions(v_list, permute):
 
     in_in_list = []
     out_out_list = []
@@ -62,7 +62,14 @@ def add_partitions(v_list):
         in_in_list.append(in_in.reshape(n**2))
         out_out_list.append(out_out.reshape(n**2))
         in_out_list.append(in_out.reshape(n**2))
-
+	
+    if permute:
+	lg_concat = np.concatenate((in_in_list, out_out_list, in_out_list), axis=1).  
+	lg_shape = lg.concat.shape
+	permuted = np.random.permutation(lg_concat.flatten())
+	permuted = permuted.reshape(lg_shape)
+	
+	return np.concatenate((v_list, permuted), axis=1) 	
     return np.concatenate((v_list, in_in_list, out_out_list, in_out_list),axis=1)
 
     
@@ -71,7 +78,7 @@ def add_partitions(v_list):
 parser = argparse.ArgumentParser(description="Script for generating data with line graph concatenations")
 
 # Parse arguments
-parser.add_argument('--type', type=str, help='Either graph or custom', default='simulation')
+parser.add_argument('--type', type=str, help='Either graph or simulation', default='simulation')
 parser.add_argument('--line_graph', action='store_true', help='Concatenate line graph partitions onto data', default=False)
 parser.add_argument('--num_nodes', type=int, help='Number of nodes', required=False)
 parser.add_argument('--timesteps', type=int, help='Number of timesteps', required=False)
@@ -79,6 +86,7 @@ parser.add_argument('--alpha', type=float, help='Alpha value (percent of edges t
 parser.add_argument('--random_seed', type=int, help='Random seed', required=False)
 parser.add_argument('--data_path', type=str, help='Path to custom data', required=False)
 parser.add_argument('--name', type=str, help='name of custom data', required=False)
+parser.add_argument('--permute', action='store_true', help='Permute line graph embedding', default=False)
 
 args = parser.parse_args()
 
@@ -108,7 +116,10 @@ if exp_type == "custom":
        
     
     if create_lg:
-      lg_data = add_partitions(df.values)
+      if permute:
+      	lg_data = add_partitions(df.values, True)
+      else:
+	lg_data = add_partitions(df.values, False)
       df = pd.DataFrame(lg_data)
 
     df += 1
@@ -131,7 +142,11 @@ else:
 
   if create_lg:
     #concatenate the line graph onto the original data
-    lg_data = add_partitions(vals)
+    if permute:
+    	lg_data = add_partitions(vals, True)
+    else:
+	lg_data = add_partitions(vals, False)
+
     line_graph_df = pd.DataFrame(lg_data)
     line_graph_df.index.name = 'date'
     line_graph_df = line_graph_df.reset_index()
@@ -144,5 +159,3 @@ else:
 
   end = time.time()
   print("Graphs generated, time:", end-start)
-
-
