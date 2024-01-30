@@ -105,8 +105,6 @@ elif [ "$1" == "custom" ]; then
 
     if [ "$line_graph" == "true" ]; then
 
-
-        
         ext="_lg_prepared"
 
 
