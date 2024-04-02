@@ -4,7 +4,7 @@ I have used this model to get results on various experiments involving graph evo
 The changes I have made have been optimized to run on the BYU supercomputer. The main point of 
 entry for the code can be found in the `sim_graph_test_sc.sh` file. The code has comments/documentation
 that should guide you on how to reproduce the results from the paper on the GitLab. Results are found
-in the res_analysis.ipynb.
+in the res_analysis.ipynb. Data for results can be found at https://byu.box.com/s/fjgld70l7eec7hko4nx07omwjg0klshk.
 
 
 # Informer: Beyond Efficient Transformer for Long Sequence Time-Series Forecasting (AAAI'21 Best Paper)
