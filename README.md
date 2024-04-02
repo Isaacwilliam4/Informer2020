@@ -1,3 +1,11 @@
+# Notes from About Evolving Graph Research
+
+I have used this model to get results on various experiments involving graph evolution. 
+The changes I have made have been optimized to run on the BYU supercomputer. The main point of 
+entry for the code can be found in the `sim_graph_test_sc.sh` file. The code has comments/documentation
+that should guide you on how to reproduce the results from the paper on the GitLab.
+
+
 # Informer: Beyond Efficient Transformer for Long Sequence Time-Series Forecasting (AAAI'21 Best Paper)
 ![Python 3.6](https://img.shields.io/badge/python-3.6-green.svg?style=plastic)
 ![PyTorch 1.2](https://img.shields.io/badge/PyTorch%20-%23EE4C2C.svg?style=plastic)
