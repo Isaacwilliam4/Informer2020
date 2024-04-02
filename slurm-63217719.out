@@ -1,0 +1,84 @@
+WARNING: you may need to modify /home/isaacwp/.config/docker/daemon.json to
+pull images; see
+https://github.com/docker/for-linux/issues/1172#issuecomment-771929216 
+Args: Type=simulation, NumNodes=100 TimeSteps=1000, LineGraphPartitioning=true, Alpha=.4, Permute=false
+Running training with line graph partitions
+Simulated line graph file exists, skipping file generation...
+Args in experiment:
+Namespace(activation='gelu', attn='prob', batch_size=32, c_out=10000, checkpoints='./checkpoints/', cols=None, d_ff=2048, d_layers=1, d_model=512, data='sim_graph', data_path='lg_n100_t1000.csv', dec_in=40000, des='lg_p_n100_t1000_test', detail_freq='d', device_ids=[0, 1, 2, 3], devices='0,1,2,3', distil=True, do_predict=False, dropout=0.05, e_layers=2, embed='timeF', enc_in=40000, factor=5, features='M', freq='d', gpu=0, inverse=False, itr=2, label_len=48, learning_rate=0.0001, loss='mse', lradj='type1', m_true_len=10000, mix=True, model='informer', n_heads=8, num_workers=0, output_attention=False, padding=0, patience=3, pred_len=24, root_path='./data/', s_layers=[3, 2, 1], seq_len=96, target='none', train_epochs=6, use_amp=False, use_gpu=True, use_multi_gpu=True)
+Use GPU: cuda:0
+>>>>>>>start training : informer_sim_graph_ftM_sl96_ll48_pl24_dm512_nh8_el2_dl1_df2048_atprob_fc5_ebtimeF_dtTrue_mxTrue_lg_p_n100_t1000_test_0>>>>>>>>>>>>>>>>>>>>>>>>>>
+features M
+train 581
+features M
+val 77
+features M
+test 177
+Epoch: 1 cost time: 72.98646712303162
+Epoch: 1, Steps: 18 | Train Loss: 18.0605485 Vali Loss: 16.3127670 Test Loss: 16.3737144
+Validation loss decreased (inf --> 16.312767).  Saving model ...
+Updating learning rate to 0.0001
+Epoch: 2 cost time: 70.0889184474945
+Epoch: 2, Steps: 18 | Train Loss: 15.0654635 Vali Loss: 13.6931839 Test Loss: 13.6619978
+Validation loss decreased (16.312767 --> 13.693184).  Saving model ...
+Updating learning rate to 5e-05
+Epoch: 3 cost time: 67.34452652931213
+Epoch: 3, Steps: 18 | Train Loss: 13.1745101 Vali Loss: 12.5445709 Test Loss: 12.5319996
+Validation loss decreased (13.693184 --> 12.544571).  Saving model ...
+Updating learning rate to 2.5e-05
+Epoch: 4 cost time: 68.51581883430481
+Epoch: 4, Steps: 18 | Train Loss: 12.3669627 Vali Loss: 12.0164528 Test Loss: 12.0369778
+Validation loss decreased (12.544571 --> 12.016453).  Saving model ...
+Updating learning rate to 1.25e-05
+Epoch: 5 cost time: 67.66311478614807
+Epoch: 5, Steps: 18 | Train Loss: 12.0005100 Vali Loss: 11.7576790 Test Loss: 11.8041935
+Validation loss decreased (12.016453 --> 11.757679).  Saving model ...
+Updating learning rate to 6.25e-06
+Epoch: 6 cost time: 67.27220487594604
+Epoch: 6, Steps: 18 | Train Loss: 11.8216595 Vali Loss: 11.6594353 Test Loss: 11.6911669
+Validation loss decreased (11.757679 --> 11.659435).  Saving model ...
+Updating learning rate to 3.125e-06
+>>>>>>>testing : informer_sim_graph_ftM_sl96_ll48_pl24_dm512_nh8_el2_dl1_df2048_atprob_fc5_ebtimeF_dtTrue_mxTrue_lg_p_n100_t1000_test_0<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<
+features M
+test 177
+test shape: (5, 32, 24, 10000) (5, 32, 24, 10000)
+test shape: (160, 24, 10000) (160, 24, 10000)
+mse:11.691327095031738, mae:1.7294279336929321
+Use GPU: cuda:0
+>>>>>>>start training : informer_sim_graph_ftM_sl96_ll48_pl24_dm512_nh8_el2_dl1_df2048_atprob_fc5_ebtimeF_dtTrue_mxTrue_lg_p_n100_t1000_test_1>>>>>>>>>>>>>>>>>>>>>>>>>>
+features M
+train 581
+features M
+val 77
+features M
+test 177
+Epoch: 1 cost time: 67.64798665046692
+Epoch: 1, Steps: 18 | Train Loss: 18.0833244 Vali Loss: 16.3671303 Test Loss: 16.4028263
+Validation loss decreased (inf --> 16.367130).  Saving model ...
+Updating learning rate to 0.0001
+Epoch: 2 cost time: 66.5128333568573
+Epoch: 2, Steps: 18 | Train Loss: 15.0866371 Vali Loss: 13.6477451 Test Loss: 13.6717072
+Validation loss decreased (16.367130 --> 13.647745).  Saving model ...
+Updating learning rate to 5e-05
+Epoch: 3 cost time: 68.00102686882019
+Epoch: 3, Steps: 18 | Train Loss: 13.1915678 Vali Loss: 12.4876022 Test Loss: 12.5437384
+Validation loss decreased (13.647745 --> 12.487602).  Saving model ...
+Updating learning rate to 2.5e-05
+Epoch: 4 cost time: 65.93886375427246
+Epoch: 4, Steps: 18 | Train Loss: 12.3799890 Vali Loss: 12.0344086 Test Loss: 12.0480747
+Validation loss decreased (12.487602 --> 12.034409).  Saving model ...
+Updating learning rate to 1.25e-05
+Epoch: 5 cost time: 69.79121422767639
+Epoch: 5, Steps: 18 | Train Loss: 12.0109585 Vali Loss: 11.8141947 Test Loss: 11.8158770
+Validation loss decreased (12.034409 --> 11.814195).  Saving model ...
+Updating learning rate to 6.25e-06
+Epoch: 6 cost time: 69.02403569221497
+Epoch: 6, Steps: 18 | Train Loss: 11.8323261 Vali Loss: 11.7073975 Test Loss: 11.7020292
+Validation loss decreased (11.814195 --> 11.707397).  Saving model ...
+Updating learning rate to 3.125e-06
+>>>>>>>testing : informer_sim_graph_ftM_sl96_ll48_pl24_dm512_nh8_el2_dl1_df2048_atprob_fc5_ebtimeF_dtTrue_mxTrue_lg_p_n100_t1000_test_1<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<
+features M
+test 177
+test shape: (5, 32, 24, 10000) (5, 32, 24, 10000)
+test shape: (160, 24, 10000) (160, 24, 10000)
+mse:11.702010154724121, mae:1.728872537612915

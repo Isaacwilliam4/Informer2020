@@ -41,21 +41,38 @@ if [ "$1" == "simulation" ]; then
 
     if [ "$line_graph" == "true" ]; then
         echo 'Running training with line graph partitions'
-	
+        # Calculate enc_in and c_out
+        enc_in=$(( $2 * $2 * 4))
+        c_out=$(( $2 * $2 ))
+        name=""
         if [ "$permute" == "true" ]; then
-            if [ -f ./data/lg_p_n$2_t$3.csv ]; then
+            name="lg_p_n$2_t$3"
+            if [ -f ./data/$name.csv ]; then
                 echo "Simulated, permuted, line graph file exists, skipping file generation..."
             else
                 echo "Simulated, permuted, line graph file doesn't exist, generating file..."
-                python ./line_graph.py --type "simulation" --line_graph --num_nodes $2 --timesteps $3 --alpha $5 --permute  --random_seed 42
+                python ./line_graph.py --type "simulation" --line_graph --num_nodes $2 --timesteps $3 --alpha $5 --permute  --random_seed 42 --name $name
             fi
+
+
+
+            # Load modules, insert code, and run your programs here
+            python -u ./main_informer.py --model informer --target 'none' --data 'sim_graph' --m_true_len $c_out --data_path $name.csv --root_path "./data/" --features M --freq d --enc_in $enc_in --dec_in $enc_in --c_out $c_out --num_workers 0 --des lg_p_n$2_t$3_test --use_multi_gpu
+
         else
-            if [ -f ./data/lg_n$2_t$3.csv ]; then
+            name="lg_n$2_t$3"
+            if [ -f ./data/$name.csv ]; then
                 echo "Simulated line graph file exists, skipping file generation..."
             else
                 echo "Simulated line graph file doesn't exist, generating file..."
                 python ./line_graph.py --type "simulation" --line_graph --num_nodes $2 --timesteps $3 --alpha $5 --random_seed 42
             fi
+
+            python -u ./main_informer.py --model informer --target 'none' --data 'sim_graph' --m_true_len $c_out --data_path $name.csv --root_path "./data/" --features M --freq d --enc_in $enc_in --dec_in $enc_in --c_out $c_out --num_workers 0 --des lg_p_n$2_t$3_test --use_multi_gpu
+
+        fi
+
+        
 
     elif [ "$line_graph" == "false" ]; then
         if [ "$permute" == "true" ]; then
